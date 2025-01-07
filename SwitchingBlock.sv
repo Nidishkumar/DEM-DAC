@@ -10,8 +10,10 @@ module SwitchingBlock #(
 ) (
     input  logic                  clk_i,        // Clock signal
     input  logic                  reset_i,      // Reset signal
-    input  logic [WIDTH-1:0]      x_in_i,       // Input signal x_n,r[k]
+   
+	 input  logic [WIDTH-1:0]      x_in_i,       // Input signal x_n,r[k]
     input  logic                  pn_seq_i,     // Pseudorandom PN sequence (1-bit)
+	 input  logic [WIDTH-1:0] quantized_value,   // quantizer input
     output logic [WIDTH-1:0]      x_out1_o,     // Output x_n-1,2r-1[k]
     output logic [WIDTH-1:0]      x_out2_o,     // Output x_n-1,2r[k]
     output logic [WIDTH-1:0]      s_out_o       // Switching sequence s_n,r[k]
@@ -19,19 +21,11 @@ module SwitchingBlock #(
 
     // Internal signals
     logic [WIDTH-1:0] loop_filter_output;  // Output of the loop filter
-    logic [WIDTH-1:0] quantized_value;     // Quantizer output
+    //logic [WIDTH-1:0] quantized_value;     // Quantizer output
     logic [WIDTH-1:0] temp_s;              // Temporary switching sequence
-    logic [WIDTH-1:0] temp_s_out;          // Temporary register for s_out
+    logic [WIDTH-1:0] temp_s_out;      	 // Temporary register for s_out
+	 
 
-    // Loop filter (NTF(z)) - Combinational
-    always_comb begin
-        loop_filter_output = x_in_i; // Direct passthrough for now (replace with actual NTF logic)
-    end
-
-    // Quantizer - Combinational
-    always_comb begin
-        quantized_value = loop_filter_output >>> 1; // Right shift by 1 (divide by 2)
-    end
 
     // Generate switching sequence - Sequential
     always_ff @(posedge clk_i or posedge reset_i) begin
@@ -69,3 +63,4 @@ module SwitchingBlock #(
     end
 
 endmodule
+ 
