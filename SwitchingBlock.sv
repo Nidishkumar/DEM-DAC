@@ -10,9 +10,8 @@ module SwitchingBlock #(
 ) (
     input  logic                  clk_i,        // Clock signal
     input  logic                  reset_i,      // Reset signal
-   
 	 input  logic [WIDTH-1:0]      x_in_i,       // Input signal x_n,r[k]
-    input  logic                  pn_seq_i,     // Pseudorandom PN sequence (1-bit)
+     input  logic                  pn_seq_i,     // Pseudorandom PN sequence (1-bit)
 	 input  logic [WIDTH-1:0] quantized_value,   // quantizer input
     output logic [WIDTH-1:0]      x_out1_o,     // Output x_n-1,2r-1[k]
     output logic [WIDTH-1:0]      x_out2_o,     // Output x_n-1,2r[k]
@@ -24,7 +23,6 @@ module SwitchingBlock #(
     //logic [WIDTH-1:0] quantized_value;     // Quantizer output
     logic [WIDTH-1:0] temp_s;              // Temporary switching sequence
     logic [WIDTH-1:0] temp_s_out;      	 // Temporary register for s_out
-	 
 
 
     // Generate switching sequence - Sequential
@@ -63,4 +61,3 @@ module SwitchingBlock #(
     end
 
 endmodule
- 

@@ -14,7 +14,6 @@ module quantizer #(
     output logic [OUTPUT_WIDTH-1:0] quantized_out_o, // Quantized output
     output logic [INPUT_WIDTH-1:0]  quant_error_o    // Quantization error
 );
-
     // Parameters for quantization levels
     localparam QUANT_STEP = (1 << (INPUT_WIDTH - OUTPUT_WIDTH)); // Step size
     localparam MAX_LEVEL  = (1 << OUTPUT_WIDTH) - 1;            // Maximum quantized level
