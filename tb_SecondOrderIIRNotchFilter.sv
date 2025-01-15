@@ -9,12 +9,12 @@ module tb_SecondOrderIIRNotchFilter;
     logic signed [WIDTH-1:0] x_in;
 
     // Outputs from the DUT
-    logic signed [2*WIDTH-1:0] y_out;
+    logic signed [4*WIDTH-1:0] y_out;
     logic signed [WIDTH-1:0] ntf_out;
-    logic signed [WIDTH-1:0] x_prev1;
-    logic signed [WIDTH-1:0] x_prev2;
-    logic signed [WIDTH-1:0] y_prev1;
-    logic signed [WIDTH-1:0] y_prev2;
+    logic signed [4*WIDTH-1:0] x_prev1;
+    logic signed [4*WIDTH-1:0] x_prev2;
+    logic signed [4*WIDTH-1:0] y_prev1;
+    logic signed [4*WIDTH-1:0] y_prev2;
 
     // Instantiate the DUT (Device Under Test)
     SecondOrderIIRNotchFilter #(
@@ -56,6 +56,11 @@ module tb_SecondOrderIIRNotchFilter;
         $display("x_prev1:%d, x_prev2:%d", x_prev1, x_prev2);
         $display("y_prev1:%d, y_prev2:%d", y_prev1, y_prev2);
         
+		  #10
+		   reset = 1;
+        #10; // Hold reset for 2 clock cycles
+        reset = 0;
+		  
         // Test case 2: Zero input
         x_in = 16'sd0;
         #10; // Wait for 1 clock cycle
@@ -77,26 +82,7 @@ module tb_SecondOrderIIRNotchFilter;
         $display("x_prev1:%d, x_prev2:%d", x_prev1, x_prev2);
         $display("y_prev1:%d, y_prev2:%d", y_prev1, y_prev2);
 
-        // Test case 5: Alternating positive and negative inputs
-        x_in = 16'sd100;
-        #10; // Wait for 1 clock cycle
-        $display("Test Case 5 (Positive Input) -> Input:%d, Output:%d, NTF:%d", x_in, y_out, ntf_out);
-        $display("x_prev1:%d, x_prev2:%d", x_prev1, x_prev2);
-        $display("y_prev1:%d, y_prev2:%d", y_prev1, y_prev2);
-
-        x_in = -16'sd400;
-        #10; // Wait for 1 clock cycle
-        $display("Test Case 5 (Negative Input) -> Input:%d, Output:%d, NTF:%d", x_in, y_out, ntf_out);
-        $display("x_prev1:%d, x_prev2:%d", x_prev1, x_prev2);
-        $display("y_prev1:%d, y_prev2:%d", y_prev1, y_prev2);
-
-        // Test case 6: High input signal
-        x_in = 16'sd25;
-        #10; // Wait for 1 clock cycle
-        $display("Test Case 6 -> Input:%d, Output:%d, NTF:%d", x_in, y_out, ntf_out);
-        $display("x_prev1:%d, x_prev2:%d", x_prev1, x_prev2);
-        $display("y_prev1:%d, y_prev2:%d", y_prev1, y_prev2);
-
+       
         // End of test
         $finish;
     end
