@@ -1,83 +1,89 @@
+// Module name: SwitchingBlock
+// Description: Testbench for the SwitchingBlock module. Implements various test cases to verify the functionality of switching logic.
+// Date: 
+// Version: 
+// Author:
+
 `timescale 1ns/1ps
 
 module tb_SwitchingBlock;
 
-     // Parameters
-    parameter WIDTH = 5;
+    // Parameters
+    parameter WIDTH = 5; // Parameter for data width
 
     // Testbench signals
-    logic clk;
-    logic reset;
-    logic [WIDTH-1:0] x_in;
-    logic pn_seq;
-    logic [WIDTH-1:0] quantized_value;
-    logic [WIDTH-1:0] x_out1;
-    logic [WIDTH-1:0] x_out2;
-    logic [WIDTH-1:0] s_out;
+    logic clk_i;                       // Clock signal
+    logic reset_i;                     // Reset signal
+    logic [WIDTH-1:0] x_in_i;          // Input signal for DUT
+    logic pn_seq_i;                    // Pseudorandom PN sequence for DUT
+    logic [WIDTH-1:0] quantized_value_i; // Quantized value input for DUT
+    logic [WIDTH-1:0] x_out1_o;        // Output 1 from DUT
+    logic [WIDTH-1:0] x_out2_o;        // Output 2 from DUT
+    logic [WIDTH-1:0] s_out_o;         // Switching sequence output from DUT
 
     // DUT instance
     SwitchingBlock #(.WIDTH(WIDTH)) dut (
-        .clk_i(clk),
-        .reset_i(reset),
-        .x_in_i(x_in),
-        .pn_seq_i(pn_seq),
-        .quantized_value(quantized_value),
-        .x_out1_o(x_out1),
-        .x_out2_o(x_out2),
-        .s_out_o(s_out)
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .x_in_i(x_in_i),
+        .pn_seq_i(pn_seq_i),
+        .quantized_value_i(quantized_value_i),
+        .x_out1_o(x_out1_o),
+        .x_out2_o(x_out2_o),
+        .s_out_o(s_out_o)
     );
 
     // Clock generation
-    always #5 clk = ~clk; // Clock toggling for simulation
+    always #5 clk_i = ~clk_i; // Generate a clock signal with a period of 10ns
 
     // Testbench procedure
     initial begin
         // Initialize inputs
-        clk = 0;
-        reset = 1;
-        x_in = 0;
-        pn_seq = 0;
-        quantized_value = 0;
+        clk_i = 0;
+        reset_i = 1;
+        x_in_i = 0;
+        pn_seq_i = 0;
+        quantized_value_i = 0;
 
         // Wait for reset deassertion
         #15;
-        reset = 0;
+        reset_i = 0;
 
-        // Apply various test cases with different x_in and pn_seq values
+        // Test cases
 
-        // Test Case 1: quantized_value = 3, Odd input (x_in = 3) and pn_seq = 1
-        #10 quantized_value = 3; x_in = 3; pn_seq = 1;
+        // Test Case 1: quantized_value_i = 3, Odd input (x_in_i = 3), pn_seq_i = 1
+        #10 quantized_value_i = 3; x_in_i = 3; pn_seq_i = 1;
 
-        // Test Case 2: quantized_value = 5, Odd input (x_in = 5) and pn_seq = 0
-        #10 quantized_value = 5; x_in = 5; pn_seq = 0;
+        // Test Case 2: quantized_value_i = 5, Odd input (x_in_i = 5), pn_seq_i = 0
+        #10 quantized_value_i = 5; x_in_i = 5; pn_seq_i = 0;
 
-        // Test Case 3: quantized_value = 4, Even input (x_in = 4) and pn_seq = 1
-        #10 quantized_value = 4; x_in = 4; pn_seq = 1;
+        // Test Case 3: quantized_value_i = 4, Even input (x_in_i = 4), pn_seq_i = 1
+        #10 quantized_value_i = 4; x_in_i = 4; pn_seq_i = 1;
 
-        // Test Case 4: quantized_value = 6, Even input (x_in = 6) and pn_seq = 0
-        #10 quantized_value = 6; x_in = 6; pn_seq = 0;
+        // Test Case 4: quantized_value_i = 6, Even input (x_in_i = 6), pn_seq_i = 0
+        #10 quantized_value_i = 6; x_in_i = 6; pn_seq_i = 0;
 
-        // Test Case 5: quantized_value = 7, Odd input (x_in = 7) and pn_seq = 1
-        #10 quantized_value = 7; x_in = 7; pn_seq = 1;
+        // Test Case 5: quantized_value_i = 7, Odd input (x_in_i = 7), pn_seq_i = 1
+        #10 quantized_value_i = 7; x_in_i = 7; pn_seq_i = 1;
 
-        // Test Case 6: quantized_value = 2, Odd input (x_in = 9) and pn_seq = 0
-        #10 quantized_value = 2; x_in = 9; pn_seq = 0;
+        // Test Case 6: quantized_value_i = 2, Odd input (x_in_i = 9), pn_seq_i = 0
+        #10 quantized_value_i = 2; x_in_i = 9; pn_seq_i = 0;
 
-        // Test Case 7: quantized_value = 1, Even input (x_in = 10) and pn_seq = 1
-        #10 quantized_value = 1; x_in = 10; pn_seq = 1;
+        // Test Case 7: quantized_value_i = 1, Even input (x_in_i = 10), pn_seq_i = 1
+        #10 quantized_value_i = 1; x_in_i = 10; pn_seq_i = 1;
 
-        // Test Case 8: quantized_value = 3, Even input (x_in = 12) and pn_seq = 0
-        #10 quantized_value = 3; x_in = 12; pn_seq = 0;
+        // Test Case 8: quantized_value_i = 3, Even input (x_in_i = 12), pn_seq_i = 0
+        #10 quantized_value_i = 3; x_in_i = 12; pn_seq_i = 0;
 
-        // Test Case 9: quantized_value = 0, Zero input (x_in = 0) and pn_seq = 1
-        #10 quantized_value = 0; x_in = 0; pn_seq = 1;
+        // Test Case 9: quantized_value_i = 0, Zero input (x_in_i = 0), pn_seq_i = 1
+        #10 quantized_value_i = 0; x_in_i = 0; pn_seq_i = 1;
 
-        // Test Case 10: quantized_value = 0, Zero input (x_in = 0) and pn_seq = 0
-        #10 quantized_value = 0; x_in = 0; pn_seq = 0;
+        // Test Case 10: quantized_value_i = 0, Zero input (x_in_i = 0), pn_seq_i = 0
+        #10 quantized_value_i = 0; x_in_i = 0; pn_seq_i = 0;
 
-        // Reset test
-        #10 reset = 1; // Assert reset
-        #10 reset = 0; // Deassert reset
+        // Reset Test
+        #10 reset_i = 1; // Assert reset
+        #10 reset_i = 0; // Deassert reset
 
         // End simulation
         #10 $finish;
@@ -85,8 +91,8 @@ module tb_SwitchingBlock;
 
     // Monitor signals for debugging
     initial begin
-        $monitor("Time: %0t | clk: %b | reset: %b | x_in: %d | pn_seq: %b | quantized_value: %d | x_out1: %d | x_out2: %d | s_out: %d",
-                 $time, clk, reset, x_in, pn_seq, quantized_value, x_out1, x_out2, s_out);
+        $monitor("Time: %0t | clk_i: %b | reset_i: %b | x_in_i: %d | pn_seq_i: %b | quantized_value_i: %d | x_out1_o: %d | x_out2_o: %d | s_out_o: %d",
+                 $time, clk_i, reset_i, x_in_i, pn_seq_i, quantized_value_i, x_out1_o, x_out2_o, s_out_o);
     end
 
 endmodule

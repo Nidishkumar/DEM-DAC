@@ -1,97 +1,88 @@
+// Testbench for TopModule
+// Description: Testbench to verify functionality of TopModule
+// Date: 2025-01-16
+// Version: 1.0
+// Author: [Your Name]
+
 module tb_TopModule;
 
     // Parameters
-    parameter INPUT_WIDTH = 16;
-    parameter SWITCH_WIDTH = 5;
+    parameter INPUT_WIDTH = 16;  // Width of input signal
+    parameter SWITCH_WIDTH = 5;  // Width of switching block outputs
 
     // Inputs to the DUT
-    logic clk;
-    logic reset;
-    logic [INPUT_WIDTH-1:0] x_in;
-    logic use_ntf;
+    logic clk_i;                      // Clock signal
+    logic reset_i;                    // Reset signal
+    logic [INPUT_WIDTH-1:0] x_in_i;   // Input signal
 
     // Outputs from the DUT
-    logic [SWITCH_WIDTH-1:0] x_out1;
-    logic [SWITCH_WIDTH-1:0] x_out2;
-    logic [SWITCH_WIDTH-1:0] s_out;
+    logic [SWITCH_WIDTH-1:0] x_out1_o; // Output from SwitchingBlock
+    logic [SWITCH_WIDTH-1:0] x_out2_o; // Output from SwitchingBlock
+    logic [SWITCH_WIDTH-1:0] s_out_o;  // Output from SwitchingBlock
 
     // Instantiate the DUT (Device Under Test)
     TopModule #(
         .INPUT_WIDTH(INPUT_WIDTH),
         .SWITCH_WIDTH(SWITCH_WIDTH)
     ) uut (
-        .clk(clk),
-        .reset(reset),
-        .x_in(x_in),
-        .use_ntf(use_ntf),
-        .x_out1(x_out1),
-        .x_out2(x_out2),
-        .s_out(s_out)
+        .clk_i(clk_i),
+        .reset_i(reset_i),
+        .x_in_i(x_in_i),
+        .x_out1_o(x_out1_o),
+        .x_out2_o(x_out2_o),
+        .s_out_o(s_out_o)
     );
 
     // Clock generation (100 MHz clock)
-    always #5 clk = ~clk;  // Toggle every 5ns for 100 MHz
+    always #5 clk_i = ~clk_i;  // Toggle every 5ns for 100 MHz
 
     // Test procedure
     initial begin
         // Initialize signals
-        clk = 0;
-        reset = 1;
-        x_in = 16'sd0;
-        use_ntf = 0;
+        clk_i = 0;
+        reset_i = 1;
+        x_in_i = 16'sd0;
 
         // Apply reset
-        #10 reset = 0;  // Hold reset for 2 clock cycles
-        #10 reset = 1;
+        #10 reset_i = 0;  // Hold reset for 2 clock cycles
+        #10 reset_i = 1;
 
-        // Test Case 1: Step input signal with default NTF behavior
-        x_in = 16'sd50;  // Step input signal
-        use_ntf = 0;     // Use input signal directly
+        // Test Case 1: Step input signal
+        x_in_i = 16'sd50;  // Step input signal
         #20; // Wait for a few clock cycles
-        $display("Test Case 1 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in, x_out1, x_out2, s_out);
+        $display("Test Case 1 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in_i, x_out1_o, x_out2_o, s_out_o);
 
-        // Test Case 2: Apply NTF (Noise Transfer Function) output as input signal
-        use_ntf = 1;     // Use NTF output from IIR filter
+        // Test Case 2: Zero input signal
+        x_in_i = 16'sd0;   // Zero input signal
         #20;
-        $display("Test Case 2 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in, x_out1, x_out2, s_out);
+        $display("Test Case 2 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in_i, x_out1_o, x_out2_o, s_out_o);
 
-        // Test Case 3: Zero input signal, verify outputs should be zero
-        x_in = 16'sd0;   // Zero input signal
-        use_ntf = 0;
+        // Test Case 3: Apply negative input signal
+        x_in_i = -16'sd50; // Negative input signal
         #20;
-        $display("Test Case 3 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in, x_out1, x_out2, s_out);
+        $display("Test Case 3 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in_i, x_out1_o, x_out2_o, s_out_o);
 
-        // Test Case 4: Apply negative input signal
-        x_in = -16'sd50; // Negative input signal
-        use_ntf = 0;
+        // Test Case 4: Test with large positive value
+        x_in_i = 16'sd200;  // Large positive input signal
         #20;
-        $display("Test Case 4 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in, x_out1, x_out2, s_out);
+        $display("Test Case 4 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in_i, x_out1_o, x_out2_o, s_out_o);
 
-        // Test Case 5: Test with large positive value
-        x_in = 16'sd200;  // Large positive input signal
-        use_ntf = 1;      // Use NTF from loop filter
+        // Test Case 5: Apply edge case values for switching behavior
+        x_in_i = 16'sd1000; // Test with larger input
         #20;
-        $display("Test Case 5 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in, x_out1, x_out2, s_out);
+        $display("Test Case 5 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in_i, x_out1_o, x_out2_o, s_out_o);
 
-        // Test Case 6: Apply edge case values for switching behavior
-        x_in = 16'sd1000; // Test with larger input
-        use_ntf = 0;
+        // Test Case 6: Testing reset behavior after input signal changes
+        reset_i = 1;  // Assert reset again
+        #10 reset_i = 0;  // Deassert reset
+        x_in_i = 16'sd75;  // Apply input after reset
         #20;
-        $display("Test Case 6 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in, x_out1, x_out2, s_out);
+        $display("Test Case 6 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in_i, x_out1_o, x_out2_o, s_out_o);
 
-        // Test Case 7: Testing reset behavior after input signal changes
-        reset = 1;  // Assert reset again
-        #10 reset = 0;  // Deassert reset
-        x_in = 16'sd75;  // Apply input after reset
-        use_ntf = 0;
+        // Test Case 7: Test PN sequence behavior (SwitchingBlock input)
+        x_in_i = 16'sd60;
         #20;
-        $display("Test Case 7 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in, x_out1, x_out2, s_out);
-
-        // Test Case 8: Test PN sequence behavior (SwitchingBlock input)
-        use_ntf = 0;     // Direct input signal
-        x_in = 16'sd60;
-        #20;
-        $display("Test Case 8 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in, x_out1, x_out2, s_out);
+        $display("Test Case 7 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in_i, x_out1_o, x_out2_o, s_out_o);
 
         // End of test
         $finish;
