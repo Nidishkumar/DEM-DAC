@@ -4,11 +4,13 @@
 // Version: 1.0
 // Author: [Your Name]
 
-module tb_TopModule;
+// Testbench for TopModule
+// Description: Testbench to verify functionality of TopModule
+// Date: 2025-01-16
+// Version: 1.0
+// Author: [Your Name]
 
-    // Parameters
-    parameter INPUT_WIDTH = 16;  // Width of input signal
-    parameter SWITCH_WIDTH = 5;  // Width of switching block outputs
+module tb_TopModule;
 
     // Inputs to the DUT
     logic clk_i;                      // Clock signal
@@ -20,11 +22,14 @@ module tb_TopModule;
     logic [SWITCH_WIDTH-1:0] x_out2_o; // Output from SwitchingBlock
     logic [SWITCH_WIDTH-1:0] s_out_o;  // Output from SwitchingBlock
 
+    // Internal signals for intermediate signals (from submodules)
+    logic [INPUT_WIDTH-1:0] quant_out;  // Quantizer output
+    logic [INPUT_WIDTH-1:0] quant_error;  // Quantizer error signal
+    logic signed [INPUT_WIDTH-1:0] loop_filter_out; // Output from IIR filter
+    logic pn_seq; // Pseudorandom sequence signal
+
     // Instantiate the DUT (Device Under Test)
-    TopModule #(
-        .INPUT_WIDTH(INPUT_WIDTH),
-        .SWITCH_WIDTH(SWITCH_WIDTH)
-    ) uut (
+    TopModule uut (
         .clk_i(clk_i),
         .reset_i(reset_i),
         .x_in_i(x_in_i),

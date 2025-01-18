@@ -5,6 +5,9 @@
 // Version: 1.0
 // Author: 
 
+import lib_switchblock_pkg::*;  // Importing necessary package for switchblock functionality.
+ 
+
 module SecondOrderIIRNotchFilter #(
     parameter WIDTH = 16  // Bit width of the signals and coefficients
 )(
@@ -28,9 +31,18 @@ module SecondOrderIIRNotchFilter #(
     logic signed [WIDTH-1:0] a2 = 16'sd32116;   // Denominator coefficient a2 
 
     // Temporary variables for intermediate calculations
-    logic signed [WIDTH-1:0] temp_x_in;
-    logic signed [4*WIDTH-1:0] temp_y_out;
     logic signed [4*WIDTH-1:0] intermediate;
+    logic signed [WIDTH-1:0] temp_x_in;
+
+    // Combinational block for intermediate calculation
+    always_comb begin
+        intermediate = 
+            (a1 * y_prev1_o) +
+            (a2 * y_prev2_o) +
+            (b0 * temp_x_in) +
+            (b1 * x_prev1_o) +
+            (b2 * x_prev2_o);
+    end
 
     // Sequential logic for filter operation
     always_ff @(posedge clk_i or posedge reset_i) begin
@@ -42,13 +54,18 @@ module SecondOrderIIRNotchFilter #(
             y_prev2_o <= 0;
             y_out_o <= 0;
             ntf_out_o <= 0;
+            temp_x_in <= 0;
         end else begin
-            // Step 1: Shift previous input and output values
+            // Store the input in a temporary register
+            temp_x_in <= x_in_i;
+
+            // Shift previous input and output values
             x_prev2_o <= x_prev1_o;
-            x_prev1_o <= x_in_i;
+            x_prev1_o <= temp_x_in;
             y_prev2_o <= y_prev1_o;
             y_prev1_o <= y_out_o;
 
+<<<<<<< HEAD
             // Step 2: Compute the intermediate output using the difference equation
             intermediate = 
                 16'(a1 * y_prev1_o) +
@@ -58,9 +75,12 @@ module SecondOrderIIRNotchFilter #(
                  16'(b2 * x_prev2_o);
 
             // Step 3: Assign the calculated output
+=======
+            // Assign the calculated output
+>>>>>>> 6999b137e5efb096a15c52110a1c3bc9f77633ec
             y_out_o <= intermediate;
 
-            // Step 4: Calculate Noise Transfer Function (NTF) output
+            // Calculate Noise Transfer Function (NTF) output
             if (intermediate != 0) begin
                 ntf_out_o <= ((1 << WIDTH) - intermediate) / intermediate; // NTF = (1 - H(z)) / H(z)
             end else begin
