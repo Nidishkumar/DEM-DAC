@@ -1,15 +1,15 @@
-// Module name: SwitchingBlock
+// Module name: tb_SwitchingBlock
 // Description: Testbench for the SwitchingBlock module. Implements various test cases to verify the functionality of switching logic.
-// Date: 
-// Version: 
-// Author:
+// Author: [Your Name]
+// Date: [Date]
+// Version: [Version Number]
 
 `timescale 1ns/1ps
 
 module tb_SwitchingBlock;
 
-    // Parameters
-    parameter WIDTH = 5; // Parameter for data width
+    // Fixed width matching the SwitchingBlock module definition
+    localparam WIDTH = 5;
 
     // Testbench signals
     logic clk_i;                       // Clock signal
@@ -21,8 +21,8 @@ module tb_SwitchingBlock;
     logic [WIDTH-1:0] x_out2_o;        // Output 2 from DUT
     logic [WIDTH-1:0] s_out_o;         // Switching sequence output from DUT
 
-    // DUT instance
-    SwitchingBlock #(.WIDTH(WIDTH)) dut (
+    // DUT instantiation without parameter override
+    SwitchingBlock dut (
         .clk_i(clk_i),
         .reset_i(reset_i),
         .x_in_i(x_in_i),

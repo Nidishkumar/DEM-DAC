@@ -8,7 +8,7 @@
 
 module quantizer_tb;
 
-    // Parameters
+    // Parameters (Hardcoded in the testbench, not passed to the quantizer)
     parameter INPUT_WIDTH = 16; // Width of input signal
     parameter OUTPUT_WIDTH = 3; // Width of quantized output
 
@@ -23,10 +23,7 @@ module quantizer_tb;
     logic signed [INPUT_WIDTH-1:0] quant_error_o;    // Quantization error
 
     // Instantiate the DUT (Device Under Test)
-    quantizer #(
-        .INPUT_WIDTH(INPUT_WIDTH),
-        .OUTPUT_WIDTH(OUTPUT_WIDTH)
-    ) i_quantizer (
+    quantizer i_quantizer (
         .x_in_i(x_in_i),               // Connect input signal
         .ntf_in_i(ntf_in_i),           // Connect NTF input
         .clk_i(clk_i),                 // Connect clock input
@@ -59,41 +56,42 @@ module quantizer_tb;
                  x_in_i, ntf_in_i, quantized_out_o, quant_error_o);
        
         // Test Case 2: Mid-level input with non-zero NTF
-        x_in_i = 16'd32768;
-        ntf_in_i = 16'd1024;
+        x_in_i = 16'd32768;  // Mid-level input (half of the maximum value)
+        ntf_in_i = 16'd1024;  // A moderate NTF value
         #10;
         $display("TC2: x_in = %d, ntf_in = %d, quantized_out = %d, quant_error = %d", 
                  x_in_i, ntf_in_i, quantized_out_o, quant_error_o);
         
 
         // Test Case 3: Maximum input with maximum NTF
-        x_in_i = 16'd65535;
-        ntf_in_i = 16'd8192;
+        x_in_i = 16'd65535;  // Maximum input
+        ntf_in_i = 16'd8192; // High NTF value
         #10;
         $display("TC3: x_in = %d, ntf_in = %d, quantized_out = %d, quant_error = %d", 
                  x_in_i, ntf_in_i, quantized_out_o, quant_error_o);
        
 
         // Test Case 4: Input between quantization steps with moderate NTF
-        x_in_i = 16'd16384; // QUANT_STEP * 2
-        ntf_in_i = 16'd4096;
+        x_in_i = 16'd16384;  // A value close to a quantization step boundary
+        ntf_in_i = 16'd4096; // Moderate NTF
         #10;
         $display("TC4: x_in = %d, ntf_in = %d, quantized_out = %d, quant_error = %d", 
                  x_in_i, ntf_in_i, quantized_out_o, quant_error_o);
         
         // Test Case 5: Edge case near a rounding boundary with small NTF
-        x_in_i = 16'd8191; // Just below QUANT_STEP
-        ntf_in_i = 16'd512;
+        x_in_i = 16'd8191;   // Just below QUANT_STEP boundary
+        ntf_in_i = 16'd512;  // Small NTF value
         #10;
         $display("TC5: x_in = %d, ntf_in = %d, quantized_out = %d, quant_error = %d", 
                  x_in_i, ntf_in_i, quantized_out_o, quant_error_o);
        
 
+
         // Test Case 6: Reset test
         rst_i = 1;
         #10 rst_i = 0;
-        x_in_i = 16'd12345;
-        ntf_in_i = 16'd256;
+        x_in_i = 16'd12345;  // Random input after reset
+        ntf_in_i = 16'd256;  // Random NTF value after reset
         #10;
         $display("TC6: After reset, x_in = %d, ntf_in = %d, quantized_out = %d, quant_error = %d", 
                  x_in_i, ntf_in_i, quantized_out_o, quant_error_o);
