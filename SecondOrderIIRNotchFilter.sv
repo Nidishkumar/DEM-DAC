@@ -51,11 +51,11 @@ module SecondOrderIIRNotchFilter #(
 
             // Step 2: Compute the intermediate output using the difference equation
             intermediate = 
-                (a1 * y_prev1_o) +
-                (a2 * y_prev2_o) +
-                (b0 * x_in_i) +
-                (b1 * x_prev1_o) +
-                (b2 * x_prev2_o);
+                16'(a1 * y_prev1_o) +
+                 16'(a2 * y_prev2_o) +
+                 16'(b0 * x_in_i) +
+                 16'(b1 * x_prev1_o) +
+                 16'(b2 * x_prev2_o);
 
             // Step 3: Assign the calculated output
             y_out_o <= intermediate;
