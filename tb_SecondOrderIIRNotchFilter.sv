@@ -4,10 +4,10 @@
 // Date: [Date]
 // Version: 1.1
 
-module tb_SecondOrderIIRNotchFilter;
 
-    // Parameters
-    parameter WIDTH = 16;
+
+
+module tb_SecondOrderIIRNotchFilter;
 
     // Inputs to the DUT
     logic clk_i;                             // Clock signal

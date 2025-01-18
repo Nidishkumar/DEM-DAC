@@ -5,6 +5,7 @@
 // Version: 1.0
 // Author: 
 
+
 module pn_sequence_generator (
     input logic clk_i,          // Clock input
     input logic reset_i,        // Reset input (active high)

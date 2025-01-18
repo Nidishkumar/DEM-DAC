@@ -6,11 +6,13 @@
 
 `timescale 1ns / 1ps
 
+import lib_switchblock_pkg::*;  // Importing necessary package for switchblock functionality.
+
 module quantizer_tb;
 
     // Parameters (Hardcoded in the testbench, not passed to the quantizer)
-    parameter INPUT_WIDTH = 16; // Width of input signal
-    parameter OUTPUT_WIDTH = 3; // Width of quantized output
+    //parameter INPUT_WIDTH = 16; // Width of input signal
+    //parameter OUTPUT_WIDTH = 3; // Width of quantized output
 
     // Inputs
     logic [INPUT_WIDTH-1:0] x_in_i;      // Input signal

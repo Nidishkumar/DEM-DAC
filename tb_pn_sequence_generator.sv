@@ -1,49 +1,48 @@
-// Module name: tb_pn_sequence_generator
-// Description: Testbench for the PN sequence generator module.
-//              Applies stimulus to the pn_sequence_generator and monitors its output.
-// Date:
-// Version: 1.0
-// Author: 
+// Testbench for PN_Sequence_Generator
+// This testbench verifies the functionality of the PN sequence generator.
 
 module tb_pn_sequence_generator;
 
     // Testbench signals
-    logic clk_i;      // Clock input
-    logic reset_i;    // Reset input
-    logic pn_seq_o;   // Output PN sequence bit
+    logic clk_tb;           // Clock signal
+    logic reset_tb;         // Reset signal
+    logic pn_seq_tb;        // PN sequence output
 
     // Instantiate the pn_sequence_generator module
-    pn_sequence_generator pn_gen_inst (
-        .clk_i(clk_i),        // Connect input clock
-        .reset_i(reset_i),    // Connect input reset
-        .pn_seq_o(pn_seq_o)   // Connect output PN sequence bit
+    pn_sequence_generator uut (
+        .clk_i(clk_tb),       // Connect the clock
+        .reset_i(reset_tb),   // Connect the reset
+        .pn_seq_o(pn_seq_tb)  // Connect the output
     );
 
-    // Clock generation (50 MHz clock)
+    // Clock generation: 50 MHz clock
     always begin
-        #10 clk_i = ~clk_i;  // Toggle clock every 10ns for a 50MHz clock
+        #10 clk_tb = ~clk_tb;  // Toggle clock every 10 ns (50 MHz)
     end
 
-    // Testbench stimulus
+    // Test stimulus
     initial begin
         // Initialize signals
-        clk_i = 0;
-        reset_i = 0; 
+        clk_tb = 0;
+        reset_tb = 0;
         
         // Apply reset
         $display("Applying reset...");
-        reset_i = 1;
-        #20;  // Hold reset for two clock cycles
-        reset_i = 0;
+        reset_tb = 1;
+        #20;  // Hold reset for 20 ns
+        reset_tb = 0;
         
-        // Monitor the pn_seq_o output for 100 clock cycles
-        $display("Starting simulation...");
-        $monitor("At time %t, pn_seq_o = %b", $time, pn_seq_o);
-        
-        #200;  // Simulate for 200ns (20 clock cycles)
-        
-        $display("Simulation complete.");
+        // Observe the PN sequence for some clock cycles
+        $display("Observing PN sequence output...");
+        #100;  // Observe for 100 ns (5 clock cycles)
+
+        // End the simulation
         $finish;
+    end
+
+    // Monitor the output
+    initial begin
+        $monitor("Time: %0t | pn_seq_o: %b", $time, pn_seq_tb);
     end
 
 endmodule
