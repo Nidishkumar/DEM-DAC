@@ -1,82 +1,78 @@
-module SecondOrderIIRNotchFilter #(
-    parameter WIDTH = 16  // Bit width of the signals and coefficients
-)(
-    input logic clk,                        // Clock signal
-    input logic reset,                      // Reset signal
-    input logic [WIDTH-1:0] x_in,           // Current input signal (signed)
-    output logic [4*WIDTH-1:0] y_out,       // Current output signal (signed)
-    output logic [WIDTH-1:0] ntf_out,       // Noise Transfer Function output (signed)
+// Module name: SecondOrderIIRNotchFilter
+// Description: Implements a second-order IIR notch filter using a difference equation.
+//              Provides filtering with specified coefficients and computes the NTF.
+// Date: 
+// Version: 1.0
+// Author: 
 
-    output logic [4*WIDTH-1:0] x_prev1,       // Previous input x[n-1]
-    output logic [4*WIDTH-1:0] x_prev2,       // Previous input x[n-2]
-    output logic [4*WIDTH-1:0] y_prev1,       // Previous output y[n-1]
-    output logic [4*WIDTH-1:0] y_prev2        // Previous output y[n-2]
+import lib_switchblock_pkg::*;  // Importing necessary package for switchblock functionality.
+ 
+
+module SecondOrderIIRNotchFilter 
+   
+(
+    input logic clk_i,                         // Clock signal
+    input logic reset_i,                       // Reset signal
+    input logic signed [WIDTH-1:0] x_in_i,     // Current input signal (signed)
+    output logic signed [4*WIDTH-1:0] y_out_o, // Current output signal (signed)
+    output logic signed [WIDTH-1:0] ntf_out_o, // Noise Transfer Function output (signed)
+
+    output logic signed [4*WIDTH-1:0] x_prev1_o, // Previous input x[n-1]
+    output logic signed [4*WIDTH-1:0] x_prev2_o, // Previous input x[n-2]
+    output logic signed [4*WIDTH-1:0] y_prev1_o, // Previous output y[n-1]
+    output logic signed [4*WIDTH-1:0] y_prev2_o  // Previous output y[n-2]
 );
 
     // Coefficients for the notch filter (scaled for 16-bit signed values)
-    logic signed [WIDTH-1:0] b0 = 16'sd32768;    // Numerator coefficient b0 
-    logic signed [WIDTH-1:0] b1 = -16'sd62325;   // Numerator coefficient b1 
-    logic signed [WIDTH-1:0] b2 = 16'sd32768;    // Numerator coefficient b2 
-    logic signed [WIDTH-1:0] a1 = -16'sd61702;   // Denominator coefficient a1 (negative)
-    logic signed [WIDTH-1:0] a2 = 16'sd32116;    // Denominator coefficient a2 
+    logic signed [WIDTH-1:0] b0 = 16'sd32768;   // Numerator coefficient b0 
+    logic signed [WIDTH-1:0] b1 = -16'sd62325;  // Numerator coefficient b1 
+    logic signed [WIDTH-1:0] b2 = 16'sd32768;   // Numerator coefficient b2 
+    logic signed [WIDTH-1:0] a1 = -16'sd61702;  // Denominator coefficient a1 (negative)
+    logic signed [WIDTH-1:0] a2 = 16'sd32116;   // Denominator coefficient a2 
 
-    // Temporary intermediate variables for x_in and y_out
-    logic signed [WIDTH-1:0] temp_xin;
-    logic signed [4*WIDTH-1:0] temp_yout;
-
-    // Temporary intermediate result for the output calculation
+    // Temporary variables for intermediate calculations
     logic signed [4*WIDTH-1:0] intermediate;
+    logic signed [WIDTH-1:0] temp_x_in;
 
-    always_ff @(posedge clk or posedge reset) begin
-        if (reset) begin
+    // Combinational block for intermediate calculation
+    always_comb begin
+        intermediate =
+                16'(a1 * y_prev1_o) +
+                 16'(a2 * y_prev2_o) +
+                 16'(b0 * x_in_i) +
+                 16'(b1 * x_prev1_o) +
+                 16'(b2 * x_prev2_o); 
+    end
+
+    // Sequential logic for filter operation
+    always_ff @(posedge clk_i or posedge reset_i) begin
+        if (reset_i) begin
             // Reset all states and outputs to zero
-            x_prev1 <= 0;
-            x_prev2 <= 0;
-            y_prev1 <= 0;
-            y_prev2 <= 0;
-            y_out <= 0;
-            ntf_out <= 0;
-            temp_xin <= 0;
-            temp_yout <= 0;
+            x_prev1_o <= 0;
+            x_prev2_o <= 0;
+            y_prev1_o <= 0;
+            y_prev2_o <= 0;
+            y_out_o <= 0;
+            ntf_out_o <= 0;
+            temp_x_in <= 0;
         end else begin
-            // Step 1: Use temp variables for x_in and y_out
-            
-			  
-			  x_prev2 = x_prev1;
-            x_prev1 = temp_xin;
-            y_prev2 = y_prev1;
-            y_prev1 = y_out;
-				
-				temp_xin = x_in;
+            // Store the input in a temporary register
+            temp_x_in <= x_in_i;
 
-            // Calculate the output using the difference equation
-            intermediate = 
-                (a1 * y_prev1) +
-                (a2 * y_prev2) +
-                (b0 * x_in) +
-                (b1 * x_prev1) +
-                (b2 * x_prev2);
+            // Shift previous input and output values
+            x_prev2_o <= x_prev1_o;
+            x_prev1_o <= temp_x_in;
+            y_prev2_o <= y_prev1_o;
+            y_prev1_o <= y_out_o;
 
-            // Limit the output to the signal width
-            temp_yout = intermediate;
-				
-				
-				
+            // Assign the calculated output
+            y_out_o <= intermediate;
 
-            // Step 2: Update past input and output values after calculation
-            
-				
-				// Step 3: Assign the calculated output immediately
-             // Update y_out immediately after calculation
-				 y_out = temp_yout;
-				
-				
-
-            // Step 4: Calculate Noise Transfer Function (NTF) output
-            if (temp_yout != 0) begin
-                 ntf_out <= ((1 << WIDTH) - temp_yout) / temp_yout; // NTF = (1 - H(z)) / H(z)
+            // Calculate Noise Transfer Function (NTF) output
+            if (intermediate != 0) begin
+                ntf_out_o <= ((1 << WIDTH) - intermediate) / intermediate; // NTF = (1 - H(z)) / H(z)
             end else begin
-                ntf_out <= 0; // Default to zero if division by zero
+                ntf_out_o <= 0; // Default to zero if division by zero
             end
         end
     end
