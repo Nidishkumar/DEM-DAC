@@ -6,10 +6,8 @@
 // Author: 
 
 import lib_switchblock_pkg::*;  // Importing necessary package for switchblock functionality.
- 
-
 module SecondOrderIIRNotchFilter #(
-    parameter WIDTH = 16  // Bit width of the signals and coefficients
+//    parameter WIDTH = 16  // Bit width of the signals and coefficients
 )(
     input logic clk_i,                         // Clock signal
     input logic reset_i,                       // Reset signal
@@ -22,14 +20,14 @@ module SecondOrderIIRNotchFilter #(
     output logic signed [4*WIDTH-1:0] y_prev1_o, // Previous output y[n-1]
     output logic signed [4*WIDTH-1:0] y_prev2_o  // Previous output y[n-2]
 );
-
+/*
     // Coefficients for the notch filter (scaled for 16-bit signed values)
     logic signed [WIDTH-1:0] b0 = 16'sd32768;   // Numerator coefficient b0 
     logic signed [WIDTH-1:0] b1 = -16'sd62325;  // Numerator coefficient b1 
     logic signed [WIDTH-1:0] b2 = 16'sd32768;   // Numerator coefficient b2 
     logic signed [WIDTH-1:0] a1 = -16'sd61702;  // Denominator coefficient a1 (negative)
     logic signed [WIDTH-1:0] a2 = 16'sd32116;   // Denominator coefficient a2 
-
+*/
     // Temporary variables for intermediate calculations
     logic signed [4*WIDTH-1:0] intermediate;
     logic signed [WIDTH-1:0] temp_x_in;
@@ -65,7 +63,7 @@ module SecondOrderIIRNotchFilter #(
             y_prev2_o <= y_prev1_o;
             y_prev1_o <= y_out_o;
 
-<<<<<<< HEAD
+
             // Step 2: Compute the intermediate output using the difference equation
             intermediate = 
                 16'(a1 * y_prev1_o) +
@@ -73,11 +71,8 @@ module SecondOrderIIRNotchFilter #(
                  16'(b0 * x_in_i) +
                  16'(b1 * x_prev1_o) +
                  16'(b2 * x_prev2_o);
-
-            // Step 3: Assign the calculated output
-=======
             // Assign the calculated output
->>>>>>> 6999b137e5efb096a15c52110a1c3bc9f77633ec
+
             y_out_o <= intermediate;
 
             // Calculate Noise Transfer Function (NTF) output
