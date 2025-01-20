@@ -8,9 +8,9 @@
 import lib_switchblock_pkg::*;  // Importing necessary package for switchblock functionality.
  
 
-module SecondOrderIIRNotchFilter #(
-    
-)(
+module SecondOrderIIRNotchFilter 
+   
+(
     input logic clk_i,                         // Clock signal
     input logic reset_i,                       // Reset signal
     input logic signed [WIDTH-1:0] x_in_i,     // Current input signal (signed)
