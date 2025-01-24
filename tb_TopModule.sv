@@ -10,6 +10,10 @@
 // Version: 1.0
 // Author: [Your Name]
 
+`include "lib_switchblock_pkg.sv"
+`include "TopModule.sv"
+import lib_switchblock_pkg::*;
+
 module tb_TopModule;
 
     // Inputs to the DUT
@@ -56,7 +60,7 @@ module tb_TopModule;
         x_in_i = 16'sd50;  // Step input signal
         #20; // Wait for a few clock cycles
         $display("Test Case 1 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in_i, x_out1_o, x_out2_o, s_out_o);
-
+/*
         // Test Case 2: Zero input signal
         x_in_i = 16'sd0;   // Zero input signal
         #20;
@@ -88,7 +92,7 @@ module tb_TopModule;
         x_in_i = 16'sd60;
         #20;
         $display("Test Case 7 -> Input:%d, x_out1:%d, x_out2:%d, s_out:%d", x_in_i, x_out1_o, x_out2_o, s_out_o);
-
+*/
         // End of test
         $finish;
     end

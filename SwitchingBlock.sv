@@ -3,7 +3,7 @@
 // Date: 
 // Version: 
 // Author: 
-
+`include "lib_switchblock_pkg.sv"
 import lib_switchblock_pkg::*;
 
 module SwitchingBlock (

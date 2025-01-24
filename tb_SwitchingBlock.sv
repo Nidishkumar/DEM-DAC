@@ -4,12 +4,15 @@
 // Date: [Date]
 // Version: [Version Number]
 
-`timescale 1ns/1ps
+
+
+`include "SwitchingBlock.sv"
+`include "lib_switchblock_pkg.sv"
+
+import lib_switchblock_pkg::*;  // Importing necessary package for switchblock functionality.
 
 module tb_SwitchingBlock;
 
-    // Fixed width matching the SwitchingBlock module definition
-    localparam WIDTH = 5;
 
     // Testbench signals
     logic clk_i;                       // Clock signal

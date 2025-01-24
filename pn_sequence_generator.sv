@@ -1,11 +1,11 @@
-// Module name: pn_sequence_generator
+ // Module name: pn_sequence_generator
 // Description: Generates a Pseudo-Random Noise (PN) sequence using an 8-bit Linear Feedback Shift Register (LFSR).
 //              The LFSR uses taps at positions 7 and 5 for feedback.
 // Date: 
 // Version: 1.0
 // Author: 
-
-
+`include "lib_switchblock_pkg.sv"
+ 
 module pn_sequence_generator (
     input logic clk_i,          // Clock input
     input logic reset_i,        // Reset input (active high)

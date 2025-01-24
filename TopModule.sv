@@ -5,6 +5,13 @@
 // Version: 1.0
 // Author: 
 
+`include "lib_switchblock_pkg.sv"
+
+`include "pn_sequence_generator.sv"
+`include "quantizer.sv"
+`include "SecondOrderIIRNotchFilter.sv"
+`include "SwitchingBlock.sv"
+
 import lib_switchblock_pkg::*;
 
 module TopModule (

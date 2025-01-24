@@ -4,6 +4,7 @@
 // Version: 1.0
 // Author: 
 
+`include "lib_switchblock_pkg.sv"
 import lib_switchblock_pkg::*;  // Importing necessary package for switchblock functionality.
 
 module quantizer (
@@ -25,6 +26,20 @@ module quantizer (
     logic [INPUT_WIDTH-1:0] preprocessed_input;    // Preprocessed input after scaling
     logic [INPUT_WIDTH-1:0] adjusted_input;        // Input adjusted by adding NTF
     logic [INPUT_WIDTH-1:0] quant_value_FF;       // Temporary register for quantization calculation
+    logic [INPUT_WIDTH-1:0] quant_err;
+	 
+	 // Step 1: Preprocess the input signal by right-shifting (scaling down)
+          assign  preprocessed_input = x_in_i >>> 1;
+			 
+	// Step 2: Adjust the preprocessed input by adding the Noise Transfer Function (NTF)
+          assign adjusted_input = preprocessed_input + ntf_in_i;
+			 
+	// Step 3: Calculate quantized value based on the adjusted input and quantization step
+          assign  quant_value_FF = (adjusted_input + (QUANT_STEP >>> 1)) / QUANT_STEP;  // Rounding logic
+
+          assign  quant_err = adjusted_input - (quant_value_FF * QUANT_STEP);
+        
+
 
     // Quantization logic with error calculation
     always_ff @(posedge clk_i or posedge rst_i) begin
@@ -33,16 +48,7 @@ module quantizer (
             quantized_out_o <= 0;
             quant_error_o   <= 0;
         end else begin
-            // Quantization process
-            // Step 1: Preprocess the input signal by right-shifting (scaling down)
-            preprocessed_input <= x_in_i >>> 1;
-
-            // Step 2: Adjust the preprocessed input by adding the Noise Transfer Function (NTF)
-            adjusted_input <= preprocessed_input + ntf_in_i;
-
-            // Step 3: Calculate quantized value based on the adjusted input and quantization step
-            quant_value_FF <= (adjusted_input + (QUANT_STEP >>> 1)) / QUANT_STEP;  // Rounding logic
-
+           
             // Step 4: Ensure the quantized output stays within bounds
             if (quant_value_FF > MAX_LEVEL) begin
                 quantized_out_o <= MAX_LEVEL;  // Cap at the maximum output level
@@ -53,7 +59,7 @@ module quantizer (
             end
 
             // Step 5: Calculate quantization error as the difference between adjusted input and the quantized output
-            quant_error_o <= adjusted_input - (quantized_out_o * QUANT_STEP);
+            quant_error_o <= quant_err;
         end
     end
 
