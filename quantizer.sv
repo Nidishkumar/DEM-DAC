@@ -7,7 +7,7 @@
 `include "lib_switchblock_pkg.sv"
 import lib_switchblock_pkg::*;  // Importing necessary package for switchblock functionality.
 
-module quantizer (
+module quantizer ( 
     input  logic [INPUT_WIDTH-1:0]  x_in_i,           // Input signal (x)
     input  logic [INPUT_WIDTH-1:0]  ntf_in_i,         // Noise Transfer Function (NTF) input
     input  logic                    clk_i,            // Clock input
