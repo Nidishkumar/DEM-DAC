@@ -1,3 +1,10 @@
+// Module name: qadd_fixed
+// Description: Generates the n bit output when two n bit values are added.
+// Date: 
+// Version: 1.0
+// Author: 
+//`include "lib_switchblock_pkg.sv"
+
 module qadd_fixed #(
     parameter I = 16,                                                                    // Integer part
     parameter F = 16                                                                    // Fractional part
@@ -9,7 +16,7 @@ module qadd_fixed #(
 
 
     // Internal signals
-    logic signed [(I+F-1):0] result;
+   // logic signed [(I+F-1):0] result;
     logic signed [(I+F-1):0] sum;                                                       // Extended bit-width for addition
     logic signed [(I+F-1):0] max_val;                                                   // Maximum representable value
     logic signed [(I+F-1):0] min_val;                                                   // Minimum representable value
@@ -24,7 +31,7 @@ module qadd_fixed #(
     // Clamping logic for overflow and underflow
     always_comb begin
         if (a_i >= 0 && b_i >= 0 && sum[I+F-1]) 
-            result = max_val;                                                           // Clamp to maximum value
+            result_o   = max_val;                                                           // Clamp to maximum value
         else if (a_i < 0 && b_i < 0 && !(sum[I+F-1]))                                                     
             result_o = min_val;                                                           // Clamp to minimum value
         else

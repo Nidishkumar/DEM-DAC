@@ -1,8 +1,8 @@
 // Testbench for PN_Sequence_Generator
 // This testbench verifies the functionality of the PN sequence generator.
 
-`include "lib_switchblock_pkg.sv"
-`include "pn_sequence_generator"
+//`include "lib_switchblock_pkg.sv"
+//`include "pn_sequence_generator"
 
 module tb_pn_sequence_generator;
 

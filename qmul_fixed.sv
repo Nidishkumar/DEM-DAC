@@ -1,3 +1,11 @@
+// Module name: qmul_fixed
+// Description: Generates the n bit output when two n bit values are multiplied.
+// Date: 
+// Version: 1.0
+// Author: 
+//`include "lib_switchblock_pkg.sv"
+
+
 module qmul_fixed #(
     parameter I = 16,                                                      //I ---> Integer part,    for double precission I = 12
     parameter F = 16                                                      //F ---> Fractional part, for double precission F = 52
