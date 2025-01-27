@@ -28,8 +28,8 @@ module SwitchingBlock  (
     assign temp_s_out = (x_in_i[0]) ? (temp_s | 16'b1) : (temp_s & ~16'b1);
 
     // Continuous assignments for x_out1_o and x_out2_o
-    assign temp_x_out1 = x_in_i + temp_s_out;
-    assign temp_x_out2 = x_in_i - temp_s_out;
+    assign temp_x_out1 = (x_in_i + temp_s_out) >> 1; // Divide input proportionally
+    assign temp_x_out2 = x_in_i - temp_x_out1;      // Complementary split
 
     // Sequential logic to update outputs
     always_ff @(posedge clk_i or posedge reset_i) begin
