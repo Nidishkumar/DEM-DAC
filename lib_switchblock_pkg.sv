@@ -20,5 +20,10 @@ package lib_switchblock_pkg;
     // Pseudo-random noise generator constants
     parameter  LFSR_INIT = 8'hFF;          // Initial LFSR value
     parameter  LFSR_TAPS = 2'b11;   // Tap positions (7 and 5)
+	 
+	 
+	 
+    
+    parameter int NUM_LAYERS = 3 ;  // Number of layers to be processed
  
 endpackage
