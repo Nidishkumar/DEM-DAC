@@ -23,7 +23,6 @@ package lib_switchblock_pkg;
 	 
 	 
 	 
-    
-    parameter int NUM_LAYERS = 3 ;  // Number of layers to be processed
+   
  
 endpackage
