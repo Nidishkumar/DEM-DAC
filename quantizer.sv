@@ -41,7 +41,7 @@ module quantizer (
             end
             
             // Step 5: Compute quantization error
-            quant_error_o <= quant_err;
+            quant_error_o <= quant_err[INPUT_WIDTH-1:0];
         end
     end
 
