@@ -86,13 +86,13 @@ module tb_SwitchingBlockLayers;
         apply_test(-16'sd1, "TC8");                                                                   // Smallest negative value
         apply_test(16'sd0, "TC9");                                                                    // Zero case
         apply_test(16'sd25000, "TC10");                                                               // High mid positive value
-        apply_test(-16'sd25000, "TC11");                                                               // High mid negative value
+        apply_test(-16'sd25000, "TC11");                                                              // High mid negative value
         apply_test(16'sd5000, "TC12");                                                                // Lower mid positive
         apply_test(-16'sd5000, "TC13");                                                               // Lower mid negative
         apply_test(16'sd10000, "TC14");                                                               // Positive boundary
-        apply_test(-16'sd10000, "TC15");                                                               // Negative boundary
+        apply_test(-16'sd10000, "TC15");                                                              // Negative boundary
         apply_test(16'sd12345, "TC16");                                                               // Random positive
-        apply_test(-16'sd12345, "TC17");                                                               // Random negative
+        apply_test(-16'sd12345, "TC17");                                                              // Random negative
         apply_test(16'sd5432, "TC18");                                                                // Random low positive
         apply_test(-16'sd5432, "TC19");                                                               // Random low negative
         apply_test(16'sd32766, "TC20");                                                               // Near max positive
