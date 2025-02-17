@@ -19,11 +19,11 @@ module SwitchingBlockLayers (
     output logic signed [INPUT_WIDTH-1:0]        x_out3_8_o,
 
     // Status registers for each layer
-    output logic [2:0]                    active_layer,   // Indicates active processing layer
-    output logic                           layer1_status,  // 1 = Output is valid, 0 = Error detected
-    output logic                           layer2_status,  
-    output logic                           layer3_status,  
-    output logic                           error_flag      // Global error flag if any layer fails
+    output logic [2:0]                    active_layer,                                          // Indicates active processing layer
+    output logic                           layer1_status,                                        // 1 = Output is valid, 0 = Error detected
+    output logic                           layer2_status,                                         
+    output logic                           layer3_status,                                         
+    output logic                           error_flag                                            // Global error flag if any layer fails
 );
 
     // Internal signal arrays

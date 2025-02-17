@@ -5,19 +5,19 @@
 // Version: 1.1
 // `include "SecondOrderIIRNotchFilter.sv"
 // `include "lib_switchblock_pkg.sv"
-import lib_switchblock_pkg::*;               // Importing necessary package for switchblock functionality.
-module tb_SecondOrderIIRNotchFilter;
-    // Inputs to the DUT
-    logic clk_i;                             // Clock signal
-    logic reset_i;                           // Reset signal
-    logic signed [WIDTH-1:0] x_in_i;         // Input signal to the DUT
-    // Outputs from the DUT
-    logic signed [2*WIDTH-1:0] y_out_o;      // Filtered output signal
-    logic signed [WIDTH-1:0] ntf_out_o;      // Noise Transfer Function (NTF) output
-    logic signed [2*WIDTH-1:0] x_prev1_o;    // Previous input x[n-1]
-    logic signed [2*WIDTH-1:0] x_prev2_o;    // Previous input x[n-2]
-    logic signed [2*WIDTH-1:0] y_prev1_o;    // Previous output y[n-1]
-    logic signed [2*WIDTH-1:0] y_prev2_o;    // Previous output y[n-2]
+import lib_switchblock_pkg::*;                                                    // Importing necessary package for switchblock functionality.
+module tb_SecondOrderIIRNotchFilter;                                     
+    // Inputs to the DUT                                     
+    logic clk_i;                                                                  // Clock signal
+    logic reset_i;                                                                // Reset signal
+    logic signed [WIDTH-1:0] x_in_i;                                              // Input signal to the DUT
+    // Outputs from the DUT                                     
+    logic signed [2*WIDTH-1:0] y_out_o;                                           // Filtered output signal
+    logic signed [WIDTH-1:0] ntf_out_o;                                           // Noise Transfer Function (NTF) output
+    logic signed [2*WIDTH-1:0] x_prev1_o;                                         // Previous input x[n-1]
+    logic signed [2*WIDTH-1:0] x_prev2_o;                                         // Previous input x[n-2]
+    logic signed [2*WIDTH-1:0] y_prev1_o;                                         // Previous output y[n-1]
+    logic signed [2*WIDTH-1:0] y_prev2_o;                                         // Previous output y[n-2]
     // Real representations for scaled values
     real x_input_real;
     real output_real;

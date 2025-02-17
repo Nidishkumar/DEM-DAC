@@ -54,18 +54,18 @@ module tb_SwitchingBlock;
         // Test cases
           #20 quantized_value_i = 0; x_in_i = -3; pn_seq_i = 1; #10 print_outputs();
           #20 quantized_value_i = 0; x_in_i = -5; pn_seq_i = 0; #10 print_outputs();
-         // #20 quantized_value_i = 4; x_in_i = 4; pn_seq_i = 1; #10 print_outputs();
-         // #20 quantized_value_i = 6; x_in_i = 6; pn_seq_i = 0; #10 print_outputs();
-         // #20 quantized_value_i = 7; x_in_i = 7; pn_seq_i = 1; #10 print_outputs();
-         // #20 quantized_value_i = 2; x_in_i = 9; pn_seq_i = 0; #10 print_outputs();
-         // #20 quantized_value_i = 1; x_in_i = 10; pn_seq_i = 1;#10 print_outputs();
-         // #20 quantized_value_i = 3; x_in_i = 12; pn_seq_i = 0;#10 print_outputs();
-         // #20 quantized_value_i = 0; x_in_i = 0; pn_seq_i = 1; #10 print_outputs();
-         // #20 quantized_value_i = 0; x_in_i = 0; pn_seq_i = 0; #10 print_outputs();
-     //   
+          #20 quantized_value_i = 4; x_in_i = 4; pn_seq_i = 1; #10 print_outputs();
+          #20 quantized_value_i = 6; x_in_i = 6; pn_seq_i = 0; #10 print_outputs();
+          #20 quantized_value_i = 7; x_in_i = 7; pn_seq_i = 1; #10 print_outputs();
+          #20 quantized_value_i = 2; x_in_i = 9; pn_seq_i = 0; #10 print_outputs();
+          #20 quantized_value_i = 1; x_in_i = 10; pn_seq_i = 1;#10 print_outputs();
+          #20 quantized_value_i = 3; x_in_i = 12; pn_seq_i = 0;#10 print_outputs();
+          #20 quantized_value_i = 0; x_in_i = 0; pn_seq_i = 1; #10 print_outputs();
+          #20 quantized_value_i = 0; x_in_i = 0; pn_seq_i = 0; #10 print_outputs();
+        
         // Reset Test
-       // #10 reset_i = 1;#10 print_outputs();
-       // #10 reset_i = 0;#10 print_outputs();
+        #10 reset_i = 1;#10 print_outputs();
+        #10 reset_i = 0;#10 print_outputs();
         
         // End simulation
         #10 $finish;
