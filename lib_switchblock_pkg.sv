@@ -17,5 +17,6 @@ package lib_switchblock_pkg;
     parameter  LFSR_TAPS = 2'b11;                                         // Tap positions (7 and 5)
 	//ADD and MUL constants 
     parameter I = 16;                                                     // I ---> Integer part,    for double precission I = 12
+    
     parameter F = 16;                                                     // F ---> Fractional part, for double precission F = 52
-endpackage
+endpackage   
